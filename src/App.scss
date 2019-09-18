@@ -1,0 +1,29 @@
+.App{
+    width: 200px;
+    height: 300px;
+    padding: 0 10px;
+}
+
+.timer-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.video-thumbnail{
+    display: block;
+    margin: 10px auto;
+    height: 60px;
+    width: 60px;
+}
+
+.video-title{
+    text-align: center;
+}
+
+.video-controls{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 15px;
+}
