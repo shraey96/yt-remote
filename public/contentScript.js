@@ -51,12 +51,24 @@ if (youtubePlayerDOM && youtubePlayerDOM !== null) {
                 ...getDefaultVideoStats(),
                 type: 'content-videoSRCChange',
             })
+            setTimeout(() => {
+                sendMessage({
+                    ...getDefaultVideoStats(),
+                    type: 'content-videoSRCChange',
+                })
+            }, 300);
         }
     })
     youtubePlayerDOM.addEventListener('play', e => {
         sendMessage({
             ...getDefaultVideoStats(),
             type: 'content-videoPlay',
+        })
+    })
+    youtubePlayerDOM.addEventListener('waiting', e => {
+        sendMessage({
+            videoBuffering: true,
+            type: 'content-videoWaiting',
         })
     })
     youtubePlayerDOM.addEventListener('pause', e => {
@@ -87,6 +99,9 @@ const getDefaultVideoStats = () => {
         videoTitle: getVideoTitle(),
         autoPlayTracks: getAutoplayTracks(),
         type: 'content-videoInfoResponse',
+        hasNext: document.querySelector(`.ytp-prev-button`) ? true : false,
+        hasPrev: document.querySelector(`.ytp-next-button`) ? true : false,
+        isVideoBuffering: false
     }
     return videoInfo
 }
