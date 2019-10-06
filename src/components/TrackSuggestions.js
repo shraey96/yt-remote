@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const TrackSuggestions = props => {
   const { autoPlayTracks = [], videoId } = props.videoInfo;
+  const [isFetchingTracks, toggleFetchTracks] = useState(false);
+  const [fetchTracksAvailable, toggleFetchTracksAvailable] = useState(
+    !(autoPlayTracks.length > 100)
+  );
+
+  useEffect(() => {
+    const playerDOM = document.querySelector(".autoplay-container");
+    playerDOM.addEventListener("scroll", calcuteScroll);
+
+    function calcuteScroll() {
+      if (
+        (playerDOM.scrollTop / playerDOM.offsetHeight) * 100 > 75 &&
+        !isFetchingTracks &&
+        fetchTracksAvailable
+      ) {
+        toggleFetchTracks(true);
+        props.sendMessage({
+          type: "scrollBottom"
+        });
+        setTimeout(() => {
+          toggleFetchTracks(false);
+        }, 800);
+      }
+    }
+  }, []);
+
   return (
     <>
       <span className="ui-icon back" onClick={() => props.toggleUI("player")}>
@@ -30,6 +56,13 @@ const TrackSuggestions = props => {
           </p>
         );
       })}
+      {isFetchingTracks && (
+        <div className="loading-dots">
+          <div className="loading-dots--dot"></div>
+          <div className="loading-dots--dot"></div>
+          <div className="loading-dots--dot"></div>
+        </div>
+      )}
     </>
   );
 };

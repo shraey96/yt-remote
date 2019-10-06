@@ -73,6 +73,14 @@ class App extends React.Component {
           }
         });
       }
+      if (request.type === "content-scrollDown") {
+        this.setState({
+          videoInfo: {
+            ...this.state.videoInfo,
+            autoPlayTracks: request.autoPlayTracks
+          }
+        });
+      }
     });
   };
 

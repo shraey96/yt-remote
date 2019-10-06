@@ -44,6 +44,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       setVideoRepeat(request.repeat);
       sendMessage(getDefaultVideoStats());
       break;
+    case "scrollBottom":
+      scrollToBottom();
+      break;
 
     default:
       break;
@@ -207,4 +210,15 @@ const getAutoplayTracks = () => {
       id: href.split("?")[1].replace("v=", "")
     };
   });
+};
+
+const scrollToBottom = () => {
+  const HTMLDOM = document.querySelector("html");
+  HTMLDOM.scrollTo(0, HTMLDOM.scrollHeight);
+  setTimeout(() => {
+    sendMessage({
+      type: "content-scrollDown",
+      autoPlayTracks: getAutoplayTracks()
+    });
+  }, 800);
 };
