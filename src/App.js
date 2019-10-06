@@ -110,16 +110,19 @@ class App extends React.Component {
               </div>
             </CSSTransition>
           )}
+          {activeSection === "search" && (
+            <CSSTransition timeout={350} classNames="fadeRight-animation">
+              <div className="search-items-container">
+                <SearchItems
+                  toggleUI={section =>
+                    this.setState({ activeSection: section })
+                  }
+                  sendMessage={msg => this.sendMessage(msg)}
+                />
+              </div>
+            </CSSTransition>
+          )}
         </TransitionGroup>
-        {activeSection === "search" && (
-          <CSSTransition timeout={350} classNames="fadeRight-animation">
-            <div className="search-items-container">
-              <SearchItems
-                toggleUI={section => this.setState({ activeSection: section })}
-              />
-            </div>
-          </CSSTransition>
-        )}
       </div>
     );
   }

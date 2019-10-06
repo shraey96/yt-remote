@@ -18,7 +18,7 @@ class Timer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTime: props.currentTime || 0
+      videoCurrentTime: props.videoCurrentTime || 0
     };
     this.timeSeekInterval = null;
   }
@@ -37,8 +37,19 @@ class Timer extends React.Component {
     }
     if (prevProps.videoId !== this.props.videoId) {
       this.setState({
-        currentTime: 0
+        videoCurrentTime: 0
       });
+    }
+    if (
+      secondsToHms(this.state.videoCurrentTime) ===
+        secondsToHms(this.props.videoDuration) &&
+      this.props.isRepeat &&
+      prevProps.videoId === this.props.videoId
+    ) {
+      this.stopSeekTimer();
+    }
+    if (prevProps.videoId === this.props.videoId) {
+      console.log(9999);
     }
   }
 
@@ -49,7 +60,7 @@ class Timer extends React.Component {
   startSeekTimer = () => {
     this.timeSeekInterval = setInterval(() => {
       this.setState({
-        currentTime: this.state.currentTime + 1
+        videoCurrentTime: this.state.videoCurrentTime + 1
       });
     }, 1000);
   };
@@ -61,34 +72,34 @@ class Timer extends React.Component {
   seekSong = val => {
     this.setState(
       {
-        currentTime: parseFloat(val, 10)
+        videoCurrentTime: parseFloat(val, 10)
       },
       () => {
         this.props.sendMessage({
           type: "seekVideo",
-          duration: this.state.currentTime
+          duration: this.state.videoCurrentTime
         });
       }
     );
   };
 
   render() {
-    const { currentTime } = this.state;
-    const { playDuration } = this.props;
+    const { videoCurrentTime } = this.state;
+    const { videoDuration } = this.props;
 
     return (
       <div className="timer-container">
-        <span className="timer-number">{secondsToHms(currentTime)}</span>
+        <span className="timer-number">{secondsToHms(videoCurrentTime)}</span>
         <input
           className="timer-slider"
           type="range"
           min="0"
-          max={playDuration}
-          value={currentTime}
+          max={videoDuration}
+          value={videoCurrentTime}
           step="0.1"
           onChange={e => this.seekSong(e.target.value)}
         />
-        <span className="timer-number">{secondsToHms(playDuration)}</span>
+        <span className="timer-number">{secondsToHms(videoDuration)}</span>
       </div>
     );
   }

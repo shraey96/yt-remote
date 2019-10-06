@@ -18,7 +18,7 @@ const TrackSuggestions = props => {
       {autoPlayTracks.map(a => {
         return (
           <p
-            className={`autoplay-item ellipsis ${a.id === videoId && "active"}`}
+            className={`result-item ellipsis ${a.id === videoId && "active"}`}
             onClick={() =>
               props.sendMessage({
                 type: "playVideoId",
