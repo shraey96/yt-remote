@@ -17,8 +17,7 @@ class App extends React.Component {
     this.tabId = null;
     this.state = {
       videoInfo: null,
-      activeSection: "player",
-      search: ""
+      activeSection: "player"
     };
   }
 
@@ -91,7 +90,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { videoInfo, activeSection, search } = this.state;
+    const { videoInfo, activeSection } = this.state;
     if (videoInfo === null) return "";
 
     console.log("videoInfo:: ", videoInfo);

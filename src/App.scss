@@ -36,6 +36,9 @@
   position: relative;
   overflow: hidden;
   background: #201c1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .player-container {
@@ -320,6 +323,8 @@
 }
 
 // transition group animations //
+
+// fade-up animation //
 .fadeUp-animation-enter {
   transform: translateY(250px);
   opacity: 0;
@@ -339,6 +344,7 @@
   transition: all 350ms ease-in-out;
 }
 
+// fade-right animation //
 .fadeRight-animation-enter {
   transform: translateX(200px);
   opacity: 0;
@@ -355,6 +361,22 @@
 .fadeRight-animation-exit-active {
   opacity: 0;
   transform: translateX(200px);
+  transition: all 350ms ease-in-out;
+}
+
+// opacity animation //
+.opacity-animation-enter {
+  opacity: 0;
+}
+.opacity-animation-enter-active {
+  opacity: 1;
+  transition: all 350ms ease-in-out;
+}
+.opacity-animation-exit {
+  opacity: 1;
+}
+.opacity-animation-exit-active {
+  opacity: 0;
   transition: all 350ms ease-in-out;
 }
 
