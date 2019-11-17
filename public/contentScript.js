@@ -46,7 +46,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendMessage(getDefaultVideoStats())
       break
     case "toggleVolume":
-      setVideoVolume(request.volume)
+      setVolume(request.volume)
       sendMessage(getDefaultVideoStats())
       break
     case "scrollBottom":
@@ -132,6 +132,9 @@ const getDefaultVideoStats = () => {
     isVideoBuffering: false,
     isRepeat: youtubePlayerDOM.loop || false
   }
+  setTimeout(() => {
+    skipAdd()
+  }, 5000)
   return videoInfo
 }
 
@@ -183,7 +186,7 @@ const seekVideo = duration => {
   return duration
 }
 
-const setVideoVolume = volume => {
+const setVolume = volume => {
   youtubePlayerDOM.volume = volume
   if (volume > 0) youtubePlayerDOM.muted = false
   return volume
@@ -192,10 +195,6 @@ const setVideoVolume = volume => {
 const getVolume = () => {
   if (youtubePlayerDOM.muted) return 0
   else return youtubePlayerDOM.volume
-}
-
-const setVolume = volume => {
-  youtubePlayerDOM.volume = volume
 }
 
 const skipTrack = val => {
@@ -208,6 +207,9 @@ const skipTrack = val => {
 const playVideoId = id => {
   const videoIdAnchor = document.querySelector(`a[href='${id}']`)
   if (videoIdAnchor) videoIdAnchor.click()
+  setTimeout(() => {
+    skipAdd()
+  }, 5000)
 }
 
 const playNewVideo = id => {
@@ -236,4 +238,9 @@ const scrollToBottom = () => {
       autoPlayTracks: getAutoplayTracks()
     })
   }, 800)
+}
+
+const skipAdd = () => {
+  const addSkipBtn = document.querySelector(".ytp-ad-skip-button")
+  if (addSkipBtn || addSkipBtn !== null) addSkipBtn.click()
 }

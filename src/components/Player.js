@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import Timer from "./Timer"
+import EllipsisScroll from "./EllipsisScroll"
 
 const Player = props => {
   const volumeRef = useRef()
@@ -29,11 +30,11 @@ const Player = props => {
     isRepeat = false,
     videoVolume = 0
   } = props.videoInfo
-
+  console.log(5555, videoVolume)
   return (
     <>
       <img className="video-thumbnail" src={videoThumbNail} alt="" />
-      <p className="video-title ellipsis">{videoTitle}</p>
+      <EllipsisScroll classNames="video-title" text={videoTitle} />
       <Timer
         videoCurrentTime={videoCurrentTime}
         videoDuration={videoDuration}
@@ -151,7 +152,7 @@ const Player = props => {
               <path d="M0 0h24v24H0z" fill="none" />
             </svg>
           )}
-          {videoVolume > 0.5 && (
+          {videoVolume >= 0.5 && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

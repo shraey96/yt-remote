@@ -1,5 +1,3 @@
-/*global chrome*/
-
 import React from "react"
 
 function secondsToHms(d) {
@@ -37,7 +35,7 @@ class Timer extends React.Component {
     }
     if (prevProps.videoId !== this.props.videoId) {
       this.setState({
-        videoCurrentTime: 0
+        videoCurrentTime: this.props.videoCurrentTime || 0
       })
     }
     if (
@@ -56,7 +54,7 @@ class Timer extends React.Component {
       }
     }
     if (prevProps.videoId === this.props.videoId) {
-      console.log(9999)
+      // console.log(9999)
     }
   }
 
@@ -92,7 +90,7 @@ class Timer extends React.Component {
 
   render() {
     const { videoCurrentTime } = this.state
-    const { videoDuration, isVideoBuffering } = this.props
+    const { videoDuration } = this.props
 
     return (
       <div className="timer-container">

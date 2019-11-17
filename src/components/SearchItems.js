@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
+
+import EllipsisScroll from "./EllipsisScroll"
 
 const SearchItems = props => {
-  const [search, setSearchVal] = useState("");
+  const [search, setSearchVal] = useState("")
   const apiKeys = [
     "AIzaSyC88bxeDCgQGOq-Jo2wS1qdzcUHndGRbNw",
     "AIzaSyDq5puPK5yCgfMrdD5JnZMnzIcSWi3kif4"
-  ];
+  ]
   // 'AIzaSyAsH4766YGg_JEJZTIXWORBVzkn0BidVgE'
-  const [searchResults, setSearchResults] = useState([]);
-  let searchTimeout = null;
+  const [searchResults, setSearchResults] = useState([])
+  let searchTimeout = null
 
   function searchVideo() {
-    const key = apiKeys[Math.floor(Math.random() * 2) + 1 - 1];
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${key}&type=video&q=${search}&order=relevance&maxResults=25`;
+    const key = apiKeys[Math.floor(Math.random() * 2) + 1 - 1]
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${key}&type=video&q=${search}&order=relevance&maxResults=25`
     fetch(url)
       .then(res => res.json())
       .then(data => {
         if (data.items.length > 0) {
           // setSearchResults([...searchResults, ...data.items])
-          setSearchResults(data.items);
+          setSearchResults(data.items)
         }
-        console.log(data);
-      });
+        console.log(data)
+      })
   }
 
   return (
@@ -48,12 +50,12 @@ const SearchItems = props => {
           placeholder="Search ..."
           autoFocus
           onChange={e => {
-            setSearchVal(e.target.value);
+            setSearchVal(e.target.value)
             if (e.target.value.length > 2) {
-              if (searchTimeout !== null) clearTimeout(searchTimeout);
+              if (searchTimeout !== null) clearTimeout(searchTimeout)
               searchTimeout = setTimeout(() => {
-                searchVideo();
-              }, 1000);
+                searchVideo()
+              }, 1000)
             }
           }}
         />
@@ -61,23 +63,34 @@ const SearchItems = props => {
       <div className="results-container">
         {searchResults.map(s => {
           return (
-            <p
+            <EllipsisScroll
               key={s.id.videoId}
-              className="result-item ellipsis"
+              classNames="result-item"
+              text={s.snippet.title.replace(/&amp;/g, "&")}
               onClick={() =>
                 props.sendMessage({
                   type: "playNewVideo",
                   videoId: s.id.videoId
                 })
               }
-            >
-              {s.snippet.title}
-            </p>
-          );
+            />
+            // <p
+            //   key={s.id.videoId}
+            //   className="result-item ellipsis"
+            //   onClick={() =>
+            //     props.sendMessage({
+            //       type: "playNewVideo",
+            //       videoId: s.id.videoId
+            //     })
+            //   }
+            // >
+            //   {s.snippet.title.replace(/&amp;/g, "&")}
+            // </p>
+          )
         })}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SearchItems;
+export default SearchItems

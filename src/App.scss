@@ -457,3 +457,17 @@ input[type="range"]::-ms-track {
     transform: scale(1, 1);
   }
 }
+
+.scroll-item {
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 180px;
+  .scroll-item-span {
+    position: relative;
+    left: 0px;
+    width: 100%;
+    transform: translateX(0%);
+    transition: left 0.25s ease;
+  }
+}

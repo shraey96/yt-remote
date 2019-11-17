@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
+import EllipsisScroll from "./EllipsisScroll"
 
 const TrackSuggestions = props => {
-  const { autoPlayTracks = [], videoId } = props.videoInfo;
-  const [isFetchingTracks, toggleFetchTracks] = useState(false);
+  const { autoPlayTracks = [], videoId } = props.videoInfo
+  const [isFetchingTracks, toggleFetchTracks] = useState(false)
   const [fetchTracksAvailable, toggleFetchTracksAvailable] = useState(
     !(autoPlayTracks.length > 100)
-  );
+  )
 
   useEffect(() => {
-    const playerDOM = document.querySelector(".autoplay-container");
-    playerDOM.addEventListener("scroll", calcuteScroll);
+    const playerDOM = document.querySelector(".autoplay-container")
+    playerDOM.addEventListener("scroll", calcuteScroll)
 
     function calcuteScroll() {
       if (
@@ -17,16 +18,16 @@ const TrackSuggestions = props => {
         !isFetchingTracks &&
         fetchTracksAvailable
       ) {
-        toggleFetchTracks(true);
+        toggleFetchTracks(true)
         props.sendMessage({
           type: "scrollBottom"
-        });
+        })
         setTimeout(() => {
-          toggleFetchTracks(false);
-        }, 800);
+          toggleFetchTracks(false)
+        }, 800)
       }
     }
-  }, []);
+  }, [])
 
   return (
     <>
@@ -43,18 +44,29 @@ const TrackSuggestions = props => {
       </span>
       {autoPlayTracks.map(a => {
         return (
-          <p
-            className={`result-item ellipsis ${a.id === videoId && "active"}`}
+          // <p
+          //   className={`result-item ellipsis ${a.id === videoId && "active"}`}
+          //   onClick={() =>
+          //     props.sendMessage({
+          //       type: "playVideoId",
+          //       vLink: a.link
+          //     })
+          //   }
+          // >
+          //   {a.title.replace(/&amp;/g, "&")}
+          // </p>
+          <EllipsisScroll
+            key={a.title}
+            text={a.title.replace(/&amp;/g, "&")}
+            classNames={`result-item ellipsis ${a.id === videoId && "active"}`}
             onClick={() =>
               props.sendMessage({
                 type: "playVideoId",
                 vLink: a.link
               })
             }
-          >
-            {a.title}
-          </p>
-        );
+          />
+        )
       })}
       {isFetchingTracks && (
         <div className="loading-dots">
@@ -64,7 +76,7 @@ const TrackSuggestions = props => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default TrackSuggestions;
+export default TrackSuggestions
