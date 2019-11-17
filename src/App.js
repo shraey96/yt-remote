@@ -102,7 +102,15 @@ class App extends React.Component {
     return (
       <div className="App">
         {videoInfo === null ? (
-          ""
+          <div className="loader-container">
+            <div className="loader-elements">
+              <div className="loader3">
+                <span></span>
+                <span></span>
+              </div>
+              <p>Connecting to YouTube</p>
+            </div>
+          </div>
         ) : (
           <>
             <div className="player-container">
