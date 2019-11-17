@@ -4,24 +4,16 @@
   "browser_action": {
     "default_popup": "index.html"
   },
-  "permissions": [
-    "tabs"
-  ],
+  "permissions": ["tabs"],
   "background": {
-    "scripts": [
-      "hot-reload.js"
-    ],
+    "scripts": ["hot-reload.js"],
     "persistent": false
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://www.youtube.com/*"
-      ],
-      "run_at": "document_idle",
-      "js": [
-        "contentScript.js"
-      ]
+      "matches": ["https://www.youtube.com/*"],
+      "run_at": "document_end",
+      "js": ["contentScript.js"]
     }
   ],
   "manifest_version": 2

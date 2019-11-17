@@ -1,44 +1,44 @@
 /*global chrome*/
 
-import React from "react";
+import React from "react"
 
 function secondsToHms(d) {
-  d = Number(d);
-  var h = Math.floor(d / 3600);
-  var m = Math.floor((d % 3600) / 60);
-  var s = Math.floor((d % 3600) % 60);
-  var hDisplay = h > 0 ? h : 0;
-  var mDisplay = m > 0 ? (m < 10 ? `0${m}` : m) : 0;
-  var sDisplay = s > 0 ? (s < 10 ? `0${s}` : s) : 0;
-  if (hDisplay === 0) return `${mDisplay}:${sDisplay}`;
-  return `${hDisplay}:${mDisplay}:${sDisplay}`;
+  d = Number(d)
+  var h = Math.floor(d / 3600)
+  var m = Math.floor((d % 3600) / 60)
+  var s = Math.floor((d % 3600) % 60)
+  var hDisplay = h > 0 ? h : 0
+  var mDisplay = m > 0 ? (m < 10 ? `0${m}` : m) : 0
+  var sDisplay = s > 0 ? (s < 10 ? `0${s}` : s) : 0
+  if (hDisplay === 0) return `${mDisplay}:${sDisplay}`
+  return `${hDisplay}:${mDisplay}:${sDisplay}`
 }
 
 class Timer extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       videoCurrentTime: props.videoCurrentTime || 0
-    };
-    this.timeSeekInterval = null;
+    }
+    this.timeSeekInterval = null
   }
 
   componentDidMount() {
-    if (this.props.isVideoPlaying) this.startSeekTimer();
+    if (this.props.isVideoPlaying) this.startSeekTimer()
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.isVideoPlaying !== this.props.isVideoPlaying) {
       if (this.props.isVideoPlaying) {
-        this.startSeekTimer();
+        this.startSeekTimer()
       } else {
-        this.stopSeekTimer();
+        this.stopSeekTimer()
       }
     }
     if (prevProps.videoId !== this.props.videoId) {
       this.setState({
         videoCurrentTime: 0
-      });
+      })
     }
     if (
       secondsToHms(this.state.videoCurrentTime) ===
@@ -46,28 +46,35 @@ class Timer extends React.Component {
       this.props.isRepeat &&
       prevProps.videoId === this.props.videoId
     ) {
-      this.stopSeekTimer();
+      this.stopSeekTimer()
+    }
+    if (prevProps.isVideoBuffering !== this.props.isVideoBuffering) {
+      if (this.props.isVideoBuffering) {
+        this.stopSeekTimer()
+      } else {
+        this.startSeekTimer()
+      }
     }
     if (prevProps.videoId === this.props.videoId) {
-      console.log(9999);
+      console.log(9999)
     }
   }
 
   componentWillUnmount() {
-    this.stopSeekTimer();
+    this.stopSeekTimer()
   }
 
   startSeekTimer = () => {
     this.timeSeekInterval = setInterval(() => {
       this.setState({
         videoCurrentTime: this.state.videoCurrentTime + 1
-      });
-    }, 1000);
-  };
+      })
+    }, 1000)
+  }
 
   stopSeekTimer = () => {
-    clearInterval(this.timeSeekInterval);
-  };
+    clearInterval(this.timeSeekInterval)
+  }
 
   seekSong = val => {
     this.setState(
@@ -78,14 +85,14 @@ class Timer extends React.Component {
         this.props.sendMessage({
           type: "seekVideo",
           duration: this.state.videoCurrentTime
-        });
+        })
       }
-    );
-  };
+    )
+  }
 
   render() {
-    const { videoCurrentTime } = this.state;
-    const { videoDuration } = this.props;
+    const { videoCurrentTime } = this.state
+    const { videoDuration, isVideoBuffering } = this.props
 
     return (
       <div className="timer-container">
@@ -101,8 +108,8 @@ class Timer extends React.Component {
         />
         <span className="timer-number">{secondsToHms(videoDuration)}</span>
       </div>
-    );
+    )
   }
 }
 
-export default Timer;
+export default Timer
