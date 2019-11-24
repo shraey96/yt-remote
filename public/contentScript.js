@@ -1,14 +1,19 @@
-console.log("content script running")
 let youtubePlayerDOM = document.querySelector("video")
 let previousVideoSrc = ""
 
 window.addEventListener("load", () => {
-  youtubePlayerDOM = document.querySelector("video")
+  youtubePlayerDOM = document.querySelector("video") || youtubePlayerDOM
   sendMessage(getDefaultVideoStats())
 })
 
 window.addEventListener("yt-navigate-finish", () => {
-  youtubePlayerDOM = document.querySelector("video")
+  youtubePlayerDOM = document.querySelector("video") || youtubePlayerDOM
+  setTimeout(() => {
+    sendMessage(getDefaultVideoStats())
+  }, 400)
+  chrome.storage.local.get(["videoVolume"], function(result) {
+    youtubePlayerDOM.volume = parseFloat(result.videoVolume, 10)
+  })
 })
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -52,6 +57,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "scrollBottom":
       scrollToBottom()
       break
+    case "fetchAutoPlayTracks":
+      sendMessage({
+        type: "autoplay-tracks",
+        autoPlayTracks: getAutoplayTracks()
+      })
+      break
 
     default:
       break
@@ -62,6 +73,9 @@ if (youtubePlayerDOM && youtubePlayerDOM !== null) {
   previousVideoSrc = youtubePlayerDOM.src
   youtubePlayerDOM.addEventListener("loadedmetadata", e => {
     if (e.target.src !== previousVideoSrc) {
+      chrome.storage.local.get(["videoVolume"], function(result) {
+        youtubePlayerDOM.volume = parseFloat(result.videoVolume, 10)
+      })
       previousVideoSrc = e.target.src
       sendMessage({
         ...getDefaultVideoStats(),
@@ -93,6 +107,14 @@ if (youtubePlayerDOM && youtubePlayerDOM !== null) {
       ...getDefaultVideoStats(),
       type: "content-videoPause"
     })
+  })
+  // youtubePlayerDOM.addEventListener("volumechange", e => {
+  //   chrome.storage.local.set({ videoVolume: e.target.volume })
+  // })
+  youtubePlayerDOM.addEventListener("ended", () => {
+    setTimeout(() => {
+      skipTrack(1)
+    }, 400)
   })
   youtubePlayerDOM.addEventListener("waiting", e => {
     sendMessage({
@@ -127,8 +149,8 @@ const getDefaultVideoStats = () => {
     videoTitle: getVideoTitle(),
     autoPlayTracks: getAutoplayTracks(),
     type: "content-videoInfoResponse",
-    hasNext: document.querySelector(`.ytp-prev-button`) ? true : false,
-    hasPrev: document.querySelector(`.ytp-next-button`) ? true : false,
+    hasPrev: document.querySelector(`.ytp-prev-button`) ? true : false,
+    hasNext: document.querySelector(`.ytp-next-button`) ? true : false,
     isVideoBuffering: false,
     isRepeat: youtubePlayerDOM.loop || false
   }
@@ -189,6 +211,7 @@ const seekVideo = duration => {
 const setVolume = volume => {
   youtubePlayerDOM.volume = volume
   if (volume > 0) youtubePlayerDOM.muted = false
+  chrome.storage.local.set({ videoVolume: volume })
   return volume
 }
 
@@ -237,7 +260,7 @@ const scrollToBottom = () => {
       type: "content-scrollDown",
       autoPlayTracks: getAutoplayTracks()
     })
-  }, 800)
+  }, 1000)
 }
 
 const skipAdd = () => {

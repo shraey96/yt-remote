@@ -4,23 +4,13 @@ function EllipsisScroll(props) {
   const itemContainerRef = useRef()
   const itemRef = useRef()
 
-  let textWidth = 0
   let mouseEnterTimeout = null
 
   const [itemScrollStyle, setItemScrollStyle] = useState({})
   const speed = 160
 
-  useEffect(() => {
-    textWidth = itemRef.current.offsetWidth
-  }, [])
-
   const handleMouseOver = () => {
-    console.log(textWidth)
-    // if (textWidth > 170) {
-    //   let length = textWidth - 180
-    //   let time = length / speed
-    //   setItemScrollStyle({ time: Math.abs(time), left: -Math.abs(length) })
-    // }
+    let textWidth = itemRef.current.offsetWidth
     let length = textWidth - 180
     let time = length / speed
     setItemScrollStyle({ time: Math.abs(time), left: -Math.abs(length) })
@@ -47,9 +37,15 @@ function EllipsisScroll(props) {
       <span
         className="scroll-item-span"
         ref={itemRef}
+        // style={{
+        //   left: `${itemScrollStyle.left || 0}px`,
+        //   transition: `left ${hasTransition ? 1.2 : 0.2}s linear ${
+        //     hasTransition ? "600ms" : "200ms"
+        //   }`
+        // }}
         style={{
           left: `${itemScrollStyle.left || 0}px`,
-          transition: `left ${hasTransition ? 2 : 0.2}s linear ${
+          transition: `left ${hasTransition ? 1.2 : 0.2}s linear ${
             hasTransition ? "600ms" : "200ms"
           }`
         }}

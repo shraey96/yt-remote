@@ -30,7 +30,7 @@ const Player = props => {
     isRepeat = false,
     videoVolume = 0
   } = props.videoInfo
-  console.log(5555, videoVolume)
+
   return (
     <>
       <img className="video-thumbnail" src={videoThumbNail} alt="" />
@@ -211,9 +211,11 @@ const Player = props => {
                 step="0.1"
                 onChange={e => {
                   e.stopPropagation()
+                  const volume = parseFloat(e.target.value, 10)
+
                   props.sendMessage({
                     type: "toggleVolume",
-                    volume: parseFloat(e.target.value, 10)
+                    volume: volume
                   })
                 }}
               />
