@@ -185,7 +185,7 @@ input[type="range"]::-ms-track {
 
 // autoplay-tracks
 .autoplay-container {
-  height: calc(100% - 40px);
+  height: calc(100% - 20px);
   overflow-y: scroll;
   background: #201c1c;
   position: absolute;
@@ -283,7 +283,8 @@ input[type="range"]::-ms-track {
   display: flex;
   align-items: center;
   left: 10px;
-  bottom: 16px;
+  // bottom: 16px;
+  bottom: 12px;
   height: 26px;
   .volume-slider {
     margin: 0 12px;
