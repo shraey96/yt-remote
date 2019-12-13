@@ -1,6 +1,8 @@
 let youtubePlayerDOM = document.querySelector("video")
 let previousVideoSrc = ""
 
+console.log(`#### Running Content Script ####`)
+
 window.addEventListener("load", () => {
   youtubePlayerDOM = document.querySelector("video") || youtubePlayerDOM
   sendMessage(getDefaultVideoStats())

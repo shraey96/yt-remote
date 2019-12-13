@@ -28,6 +28,23 @@ class App extends React.Component {
       this.bindMessageListener()
       chrome.storage.local.set({ setTabId: this.tabId })
     })
+
+    this.findYoutubeTabs()
+  }
+
+  findYoutubeTabs = () => {
+    // chrome.tabs.query({}, tabs => {
+    //   const youtubeTabsList = tabs.filter(t => t.url.includes("youtube"))
+    //   console.log("youtubeTabsList: ", youtubeTabsList)
+    //   const lastTab = youtubeTabsList[youtubeTabsList.length - 1]
+    //   chrome.tabs.executeScript(
+    //     lastTab.id,
+    //     {
+    //       code: `alert('Any Javascript code comes here !');`
+    //     },
+    //     () => console.log("executeScript: done")
+    //   )
+    // })
   }
 
   bindMessageListener = () => {
@@ -90,7 +107,6 @@ class App extends React.Component {
         })
       }
       if (request.type === "autoplay-tracks") {
-        console.log(222, request)
         this.setState({
           videoInfo: {
             ...this.state.videoInfo,
@@ -108,7 +124,6 @@ class App extends React.Component {
   render() {
     const { videoInfo, activeSection } = this.state
 
-    console.log("videoInfo:: ", videoInfo)
     return (
       <div className="App">
         {videoInfo === null ? (
@@ -171,7 +186,6 @@ class App extends React.Component {
                     <TrackSuggestions
                       videoInfo={videoInfo}
                       toggleUI={section => {
-                        this.sendMessage({ type: "fetchAutoPlayTracks" })
                         this.setState({ activeSection: section })
                       }}
                       sendMessage={msg => this.sendMessage(msg)}

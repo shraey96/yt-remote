@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import Timer from "./Timer"
 import EllipsisScroll from "./EllipsisScroll"
+import ImageVibrant from "./ImageVibrant"
 
 const Player = props => {
   const volumeRef = useRef()
@@ -33,7 +34,7 @@ const Player = props => {
 
   return (
     <>
-      <img className="video-thumbnail" src={videoThumbNail} alt="" />
+      <ImageVibrant videoThumbNail={videoThumbNail} />
       <EllipsisScroll classNames="video-title" text={videoTitle} />
       <Timer
         videoCurrentTime={videoCurrentTime}
@@ -107,7 +108,10 @@ const Player = props => {
       <div className="player-ui-toggle">
         <span
           className="player-icon list"
-          onClick={() => props.toggleUI("auto-tracks")}
+          onClick={() => {
+            props.sendMessage({ type: "fetchAutoPlayTracks" })
+            props.toggleUI("auto-tracks")
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

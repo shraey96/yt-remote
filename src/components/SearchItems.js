@@ -13,17 +13,19 @@ const SearchItems = props => {
   let searchTimeout = null
 
   function searchVideo() {
-    const key = apiKeys[Math.floor(Math.random() * 2) + 1 - 1]
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${key}&type=video&q=${search}&order=relevance&maxResults=25`
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        if (data.items.length > 0) {
-          // setSearchResults([...searchResults, ...data.items])
-          setSearchResults(data.items)
-        }
-        console.log(data)
-      })
+    clearTimeout(searchTimeout)
+    setTimeout(() => {
+      const key = apiKeys[Math.floor(Math.random() * 2) + 1 - 1]
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${key}&type=video&q=${search}&order=relevance&maxResults=25`
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (data.items.length > 0) {
+            setSearchResults(data.items)
+          }
+          console.log(data)
+        })
+    }, 900)
   }
 
   return (
