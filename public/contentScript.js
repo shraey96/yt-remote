@@ -1,6 +1,8 @@
 let youtubePlayerDOM = document.querySelector("video")
 let previousVideoSrc = ""
 
+console.log(`#### Running Content Script From Public ####`)
+
 window.addEventListener("load", () => {
   youtubePlayerDOM = document.querySelector("video") || youtubePlayerDOM
   sendMessage(getDefaultVideoStats())
@@ -143,7 +145,6 @@ const getDefaultVideoStats = () => {
   const videoId = getVideoId()
   const videoInfo = {
     videoId,
-    // videoThumbNail: `https://img.youtube.com/vi//0.jpg`,
     videoThumbNail: `https://i3.ytimg.com/vi/${videoId}/maxresdefault.jpg `,
     isVideoPlaying: isVideoPlaying(),
     videoCurrentTime: getVideoCurrentTime(),
@@ -156,6 +157,8 @@ const getDefaultVideoStats = () => {
     hasPrev: document.querySelector(`.ytp-prev-button`) ? true : false,
     hasNext: document.querySelector(`.ytp-next-button`) ? true : false,
     isVideoBuffering: false,
+    channelName: document.querySelector(".style-scope ytd-channel-name a")
+      .innerText,
     isRepeat: youtubePlayerDOM.loop || false
   }
   setTimeout(() => {
@@ -237,6 +240,9 @@ const playVideoId = id => {
   setTimeout(() => {
     skipAdd()
   }, 5000)
+  setTimeout(() => {
+    scrollToBottom()
+  }, 1000)
 }
 
 const playNewVideo = id => {
