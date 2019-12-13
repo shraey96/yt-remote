@@ -1,10 +1,8 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef } from "react"
 
 function EllipsisScroll(props) {
   const itemContainerRef = useRef()
   const itemRef = useRef()
-
-  let mouseEnterTimeout = null
 
   const [itemScrollStyle, setItemScrollStyle] = useState({})
   const speed = 160
@@ -13,16 +11,17 @@ function EllipsisScroll(props) {
     let textWidth = itemRef.current.offsetWidth
     let length = textWidth - 180
     let time = length / speed
+    console.log(555, length, textWidth)
     setItemScrollStyle({ time: Math.abs(time), left: -Math.abs(length) })
   }
 
   const handleMouseOut = () => {
-    clearTimeout(mouseEnterTimeout)
     setItemScrollStyle({})
   }
 
   const { text, classNames, onClick } = props
   const hasTransition = Object.keys(itemScrollStyle).length > 0
+  console.log(444, itemScrollStyle)
   return (
     <div
       className={`scroll-item ${classNames && classNames}`}
@@ -37,17 +36,11 @@ function EllipsisScroll(props) {
       <span
         className="scroll-item-span"
         ref={itemRef}
-        // style={{
-        //   left: `${itemScrollStyle.left || 0}px`,
-        //   transition: `left ${hasTransition ? 1.2 : 0.2}s linear ${
-        //     hasTransition ? "600ms" : "200ms"
-        //   }`
-        // }}
         style={{
           left: `${itemScrollStyle.left || 0}px`,
-          transition: `left ${hasTransition ? 1.2 : 0.2}s linear ${
-            hasTransition ? "600ms" : "200ms"
-          }`
+          transition: `left ${
+            hasTransition ? itemScrollStyle.time : 0.2
+          }s linear`
         }}
       >
         {text}
