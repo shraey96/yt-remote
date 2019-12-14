@@ -37,7 +37,7 @@ class App extends React.Component {
         () => {
           chrome.storage.local.get(["selectedTabId"], result => {
             const storageSelectedTab = result.selectedTabId
-            if (storageSelectedTab) return
+            if (!storageSelectedTab) return
             if (
               youtubeTabsList.some(
                 t => t.id === parseInt(storageSelectedTab, 10)
