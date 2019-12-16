@@ -18,7 +18,7 @@ class App extends React.Component {
     this.state = {
       videoInfo: null,
       activeSection: "player",
-      activeYoutubeTabs: [],
+      activeYoutubeTabKeys: [],
       selectedTabId: null
     }
   }
@@ -30,20 +30,28 @@ class App extends React.Component {
   findYoutubeTabs = () => {
     chrome.tabs.query({}, tabs => {
       const youtubeTabsList = tabs.filter(t => t.url.includes("youtube"))
+      const youtubeTabKeys = {}
+      youtubeTabsList.map(k => {
+        youtubeTabKeys[k.id] = { ...k }
+        return k
+      })
       this.setState(
         {
-          activeYoutubeTabs: youtubeTabsList
+          activeYoutubeTabKeys: youtubeTabKeys
         },
         () => {
+          youtubeTabsList.map(t => {
+            this.sendMessage({ type: "getVideoInfoInit", tabId: t.id }, t.id)
+          })
           chrome.storage.local.get(["selectedTabId"], result => {
             const storageSelectedTab = result.selectedTabId
+
             if (!storageSelectedTab) return
             if (
               youtubeTabsList.some(
                 t => t.id === parseInt(storageSelectedTab, 10)
               )
             ) {
-              console.log("@@@ present @@@")
               this.setState(
                 {
                   selectedTabId: storageSelectedTab
@@ -130,19 +138,35 @@ class App extends React.Component {
   }
 
   sendMessage = (message, tabId = this.state.selectedTabId) => {
-    chrome.tabs.sendMessage(tabId, message, response => {})
+    chrome.tabs.sendMessage(tabId, message, response => {
+      if (
+        response &&
+        response.tabId &&
+        this.state.activeYoutubeTabKeys[response.tabId]
+      ) {
+        this.setState({
+          activeYoutubeTabKeys: {
+            ...this.state.activeYoutubeTabKeys,
+            [response.tabId]: {
+              ...this.state.activeYoutubeTabKeys[response.tabId],
+              ...response
+            }
+          }
+        })
+      }
+    })
   }
 
   render() {
     const {
       videoInfo,
       activeSection,
-      activeYoutubeTabs,
+      activeYoutubeTabKeys,
       selectedTabId
     } = this.state
 
     console.log(this.state)
-
+    const activeYoutubeTabs = Object.values(this.state.activeYoutubeTabKeys)
     return (
       <div className="App">
         {activeYoutubeTabs.length > 0 &&
@@ -153,14 +177,17 @@ class App extends React.Component {
                 <p
                   key={t.id}
                   onClick={() => {
-                    chrome.storage.local.set({ selectedTabId: t.id }, () =>
+                    chrome.storage.local.set({ selectedTabId: t.id }, () => {
+                      if (activeYoutubeTabKeys[t.id].videoDuration === null) {
+                        chrome.tabs.update(t.id, { active: true })
+                      }
                       this.setState(
                         {
                           selectedTabId: t.id
                         },
                         () => this.bindMessageListener()
                       )
-                    )
+                    })
                   }}
                 >
                   {t.title}

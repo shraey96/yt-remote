@@ -5,13 +5,19 @@ function EllipsisScroll(props) {
   const itemRef = useRef()
 
   const [itemScrollStyle, setItemScrollStyle] = useState({})
-  const speed = 160
 
   const handleMouseOver = () => {
     let textWidth = itemRef.current.offsetWidth
     let length = textWidth - 180
-    let time = length / speed
-    console.log(555, length, textWidth)
+    console.log(9999, length)
+    let time = length / 160
+    console.log(
+      555,
+      length,
+      textWidth,
+      time,
+      itemContainerRef.current.offsetWidth
+    )
     setItemScrollStyle({ time: Math.abs(time), left: -Math.abs(length) })
   }
 

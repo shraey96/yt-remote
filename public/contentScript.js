@@ -27,6 +27,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log(1111, request, sender, request.type)
 
   switch (request.type) {
+    case "getVideoInfoInit":
+      sendResponse({
+        ...getDefaultVideoStats(),
+        tabId: request.tabId
+      })
+      break
     case "getVideoInfo":
       sendMessage(getDefaultVideoStats())
       break
@@ -113,9 +119,9 @@ if (youtubePlayerDOM && youtubePlayerDOM !== null) {
       type: "content-videoPause"
     })
   })
-  // youtubePlayerDOM.addEventListener("volumechange", e => {
-  //   chrome.storage.local.set({ videoVolume: e.target.volume })
-  // })
+  youtubePlayerDOM.addEventListener("volumechange", e => {
+    chrome.storage.local.set({ videoVolume: e.target.volume })
+  })
   youtubePlayerDOM.addEventListener("ended", () => {
     setTimeout(() => {
       skipTrack(1)
@@ -251,15 +257,33 @@ const playNewVideo = id => {
 }
 
 const getAutoplayTracks = () => {
-  let autoPlayDom = document.querySelectorAll("span.ytd-compact-video-renderer")
-  return Array.from(autoPlayDom).map(d => {
-    const href = d.closest("a.ytd-compact-video-renderer").getAttribute("href")
-    return {
-      title: d.innerText,
-      link: href,
-      id: href.split("?")[1].replace("v=", "")
-    }
-  })
+  if (window.location.href.includes("list")) {
+    let playlistTracksDOM = document.querySelectorAll(
+      "ytd-playlist-panel-video-renderer a#wc-endpoint"
+    )
+    return Array.from(playlistTracksDOM).map(d => {
+      const href = d.getAttribute("href")
+      return {
+        link: href,
+        title: d.querySelector("#meta #video-title").innerText,
+        id: href
+      }
+    })
+  } else {
+    let autoPlayDom = document.querySelectorAll(
+      "span.ytd-compact-video-renderer"
+    )
+    return Array.from(autoPlayDom).map(d => {
+      const href = d
+        .closest("a.ytd-compact-video-renderer")
+        .getAttribute("href")
+      return {
+        title: d.innerText,
+        link: href,
+        id: href.split("?")[1].replace("v=", "")
+      }
+    })
+  }
 }
 
 const scrollToBottom = () => {

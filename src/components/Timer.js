@@ -27,7 +27,7 @@ class Timer extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.isVideoPlaying !== this.props.isVideoPlaying) {
-      if (this.props.isVideoPlaying) {
+      if (this.props.isVideoPlaying && this.props.videoDuration !== null) {
         this.startSeekTimer()
       } else {
         this.stopSeekTimer()

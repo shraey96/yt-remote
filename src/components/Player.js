@@ -32,7 +32,7 @@ const Player = props => {
     isRepeat = false,
     videoVolume = 0
   } = props.videoInfo
-
+  console.log(121212, videoVolume)
   return (
     <>
       <ImageVibrant videoThumbNail={videoThumbNail} />
