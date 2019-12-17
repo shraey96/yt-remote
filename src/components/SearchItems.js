@@ -14,7 +14,7 @@ const SearchItems = props => {
 
   function searchVideo() {
     clearTimeout(searchTimeout)
-    setTimeout(() => {
+    searchTimeout = setTimeout(() => {
       const key = apiKeys[Math.floor(Math.random() * 2) + 1 - 1]
       const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${key}&type=video&q=${search}&order=relevance&maxResults=25`
       fetch(url)
@@ -23,8 +23,8 @@ const SearchItems = props => {
           if (data.items.length > 0) {
             setSearchResults(data.items)
           }
-          console.log(data)
         })
+        .catch(err => clearTimeout(searchTimeout))
     }, 900)
   }
 
@@ -54,10 +54,7 @@ const SearchItems = props => {
           onChange={e => {
             setSearchVal(e.target.value)
             if (e.target.value.length > 2) {
-              if (searchTimeout !== null) clearTimeout(searchTimeout)
-              searchTimeout = setTimeout(() => {
-                searchVideo()
-              }, 1000)
+              searchVideo()
             }
           }}
         />
@@ -76,18 +73,6 @@ const SearchItems = props => {
                 })
               }
             />
-            // <p
-            //   key={s.id.videoId}
-            //   className="result-item ellipsis"
-            //   onClick={() =>
-            //     props.sendMessage({
-            //       type: "playNewVideo",
-            //       videoId: s.id.videoId
-            //     })
-            //   }
-            // >
-            //   {s.snippet.title.replace(/&amp;/g, "&")}
-            // </p>
           )
         })}
       </div>
