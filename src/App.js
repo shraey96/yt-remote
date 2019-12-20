@@ -331,13 +331,15 @@ class App extends React.Component {
                       </span>
                     </div>
                   </div>
-                  <Player
-                    videoInfo={videoInfo}
-                    toggleUI={section =>
-                      this.setState({ activeSection: section })
-                    }
-                    sendMessage={msg => this.sendMessage(msg)}
-                  />
+                  <div className="player-component">
+                    <Player
+                      videoInfo={videoInfo}
+                      toggleUI={section =>
+                        this.setState({ activeSection: section })
+                      }
+                      sendMessage={msg => this.sendMessage(msg)}
+                    />
+                  </div>
                 </div>
                 <TransitionGroup>
                   {activeSection === "auto-tracks" && (

@@ -296,10 +296,12 @@ const skipAdd = () => {
 }
 
 const setSessionStorageVol = vol => {
-  let sessionStorageVol = sessionStorage.getItem("yt-player-volume") || {
-    data: {},
-    creation: ""
-  }
+  let sessionStorageVol =
+    sessionStorage.getItem("yt-player-volume") ||
+    JSON.stringify({
+      data: {},
+      creation: ""
+    })
   sessionStorageVol = JSON.parse(sessionStorageVol)
   sessionStorageVol.data = { volume: vol * 100, muted: vol === 0 }
   sessionStorageVol.data = JSON.stringify(sessionStorageVol.data)
