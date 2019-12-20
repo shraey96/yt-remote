@@ -27,6 +27,7 @@ const Player = props => {
     isVideoPlaying,
     videoThumbNail,
     videoTitle,
+    channelName = "",
     videoId,
     isVideoBuffering,
     isRepeat = false,
@@ -37,6 +38,7 @@ const Player = props => {
     <>
       <ImageVibrant videoThumbNail={videoThumbNail} />
       <EllipsisScroll classNames="video-title" text={videoTitle} />
+      {/* <span className="video-channel-title ellipsis">{channelName}</span> */}
       <Timer
         videoCurrentTime={videoCurrentTime}
         videoDuration={videoDuration}
