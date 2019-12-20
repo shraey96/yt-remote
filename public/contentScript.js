@@ -13,9 +13,6 @@ window.addEventListener("yt-navigate-finish", () => {
   setTimeout(() => {
     sendMessage(getDefaultVideoStats())
   }, 400)
-  chrome.storage.local.get(["videoVolume"], function(result) {
-    youtubePlayerDOM.volume = parseFloat(result.videoVolume, 10)
-  })
 })
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -84,9 +81,6 @@ if (youtubePlayerDOM && youtubePlayerDOM !== null) {
   previousVideoSrc = youtubePlayerDOM.src
   youtubePlayerDOM.addEventListener("loadedmetadata", e => {
     if (e.target.src !== previousVideoSrc) {
-      chrome.storage.local.get(["videoVolume"], function(result) {
-        youtubePlayerDOM.volume = parseFloat(result.videoVolume, 10)
-      })
       previousVideoSrc = e.target.src
       sendMessage({
         ...getDefaultVideoStats(),
@@ -119,9 +113,9 @@ if (youtubePlayerDOM && youtubePlayerDOM !== null) {
       type: "content-videoPause"
     })
   })
-  youtubePlayerDOM.addEventListener("volumechange", e => {
-    chrome.storage.local.set({ videoVolume: e.target.volume })
-  })
+  // youtubePlayerDOM.addEventListener("volumechange", e => {
+  //   chrome.storage.local.set({ videoVolume: e.target.volume })
+  // })
   youtubePlayerDOM.addEventListener("ended", () => {
     setTimeout(() => {
       skipTrack(1)
@@ -183,7 +177,6 @@ const getVideoId = () => {
 }
 
 const getVideoTitle = () => {
-  const title = document.querySelector(".title").innerText
   return document.querySelector(
     "h1.ytd-video-primary-info-renderer",
     "yt-formatted-string.ytd-video-primary-info-renderer"
@@ -224,7 +217,7 @@ const seekVideo = duration => {
 const setVolume = volume => {
   youtubePlayerDOM.volume = volume
   if (volume > 0) youtubePlayerDOM.muted = false
-  chrome.storage.local.set({ videoVolume: volume })
+  setSessionStorageVol(volume)
   return volume
 }
 
@@ -300,4 +293,16 @@ const scrollToBottom = () => {
 const skipAdd = () => {
   const addSkipBtn = document.querySelector(".ytp-ad-skip-button")
   if (addSkipBtn || addSkipBtn !== null) addSkipBtn.click()
+}
+
+const setSessionStorageVol = vol => {
+  let sessionStorageVol = sessionStorage.getItem("yt-player-volume") || {
+    data: {},
+    creation: ""
+  }
+  sessionStorageVol = JSON.parse(sessionStorageVol)
+  sessionStorageVol.data = { volume: vol * 100, muted: vol === 0 }
+  sessionStorageVol.data = JSON.stringify(sessionStorageVol.data)
+  sessionStorageVol.creation = new Date().getTime()
+  sessionStorage.setItem("yt-player-volume", JSON.stringify(sessionStorageVol))
 }
