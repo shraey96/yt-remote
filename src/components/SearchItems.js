@@ -65,7 +65,9 @@ const SearchItems = props => {
             <EllipsisScroll
               key={s.id.videoId}
               classNames="result-item"
-              text={s.snippet.title.replace(/&amp;/g, "&").replace("&#39;", "")}
+              text={s.snippet.title
+                .replace(/&amp;/g, "&")
+                .replace("&#39;", "'")}
               onClick={() =>
                 props.sendMessage({
                   type: "playNewVideo",
