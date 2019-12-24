@@ -6,7 +6,7 @@
   },
   "permissions": ["tabs", "storage"],
   "background": {
-    "scripts": ["hot-reload.js"],
+    "scripts": ["hot-reload.js", "iconChangeBackground.js"],
     "persistent": false
   },
   "content_scripts": [
