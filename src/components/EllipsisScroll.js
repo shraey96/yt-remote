@@ -8,17 +8,15 @@ function EllipsisScroll(props) {
 
   const handleMouseOver = () => {
     let textWidth = itemRef.current.offsetWidth
-    let length = textWidth - 180
-    console.log(9999, length)
-    let time = length / 160
-    console.log(
-      555,
-      length,
-      textWidth,
-      time,
-      itemContainerRef.current.offsetWidth
-    )
-    setItemScrollStyle({ time: Math.abs(time), left: -Math.abs(length) })
+    if (textWidth > 179) {
+      let length = textWidth - 180
+      let time = length / 160
+      console.log(
+        4545,
+        `textWidth: ${textWidth}, length: ${length}, time: ${time}, containerWidth: ${itemContainerRef.current.offsetWidth}`
+      )
+      setItemScrollStyle({ time: Math.abs(time), left: -Math.abs(length) })
+    }
   }
 
   const handleMouseOut = () => {
@@ -27,7 +25,7 @@ function EllipsisScroll(props) {
 
   const { text, classNames, onClick } = props
   const hasTransition = Object.keys(itemScrollStyle).length > 0
-  console.log(444, itemScrollStyle)
+
   return (
     <div
       className={`scroll-item ${classNames && classNames}`}

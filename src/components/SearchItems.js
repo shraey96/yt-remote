@@ -10,22 +10,27 @@ const SearchItems = props => {
   ]
   // 'AIzaSyAsH4766YGg_JEJZTIXWORBVzkn0BidVgE'
   const [searchResults, setSearchResults] = useState([])
-  let searchTimeout = null
+  const [searchTimeout, setSearchTimeout] = useState(null)
 
-  function searchVideo() {
-    clearTimeout(searchTimeout)
-    searchTimeout = setTimeout(() => {
-      const key = apiKeys[Math.floor(Math.random() * 2) + 1 - 1]
-      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${key}&type=video&q=${search}&order=relevance&maxResults=25`
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          if (data.items.length > 0) {
-            setSearchResults(data.items)
-          }
-        })
-        .catch(err => clearTimeout(searchTimeout))
-    }, 900)
+  function handleChange(val) {
+    setSearchVal(val)
+    if (val.length > 2) {
+      clearTimeout(searchTimeout)
+      setSearchTimeout(
+        setTimeout(() => {
+          const key = apiKeys[Math.floor(Math.random() * 2) + 1 - 1]
+          const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${key}&type=video&q=${search}&order=relevance&maxResults=25`
+          fetch(url)
+            .then(res => res.json())
+            .then(data => {
+              if (data.items.length > 0) {
+                setSearchResults(data.items)
+              }
+            })
+            .catch(err => clearTimeout(searchTimeout))
+        }, 1200)
+      )
+    }
   }
 
   return (
@@ -51,12 +56,7 @@ const SearchItems = props => {
           className="search-box"
           placeholder="Search ..."
           autoFocus
-          onChange={e => {
-            setSearchVal(e.target.value)
-            if (e.target.value.length > 2) {
-              searchVideo()
-            }
-          }}
+          onChange={e => handleChange(e.target.value)}
         />
       </div>
       <div className="results-container">
