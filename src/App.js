@@ -168,8 +168,8 @@ class App extends React.Component {
       selectedTabId
     } = this.state
 
+    const activeYoutubeTabs = Object.values(activeYoutubeTabKeys)
     console.log(this.state)
-    const activeYoutubeTabs = Object.values(this.state.activeYoutubeTabKeys)
     return (
       <div className="App">
         {activeYoutubeTabs.length > 0 &&
@@ -222,7 +222,8 @@ class App extends React.Component {
                         }
                         this.setState(
                           {
-                            selectedTabId: t.id
+                            selectedTabId: t.id,
+                            videoInfo: activeYoutubeTabKeys[t.id]
                           },
                           () => this.bindMessageListener()
                         )

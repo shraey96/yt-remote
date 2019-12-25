@@ -19,6 +19,7 @@ class Timer extends React.Component {
       videoCurrentTime: props.videoCurrentTime || 0
     }
     this.timeSeekInterval = null
+    this.startVideoRepeat = false
   }
 
   componentDidMount() {
@@ -45,6 +46,17 @@ class Timer extends React.Component {
       prevProps.videoId === this.props.videoId
     ) {
       this.stopSeekTimer()
+      // if (
+      //   prevProps.isVideoBuffering !== this.props.isVideoBuffering &&
+      //   !this.props.isVideoBuffering
+      // ) {
+      //   this.setState(
+      //     {
+      //       videoCurrentTime: this.props.videoCurrentTime || 0
+      //     },
+      //     () => this.startSeekTimer()
+      //   )
+      // }
     }
     if (prevProps.isVideoBuffering !== this.props.isVideoBuffering) {
       if (this.props.isVideoBuffering) {
