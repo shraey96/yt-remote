@@ -292,6 +292,7 @@ class App extends React.Component {
                       <p>Remote</p>
                     </div>
                     <div className="controls">
+                      <span className="player-icon settings">S</span>
                       <span
                         className="player-icon tabs"
                         onClick={() =>

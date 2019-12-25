@@ -4,9 +4,14 @@
   "browser_action": {
     "default_popup": "index.html"
   },
-  "permissions": ["tabs", "storage"],
+  "permissions": [
+    "tabs",
+    "storage",
+    "https://www.youtube.com",
+    "https://www.youtube.com/*"
+  ],
   "background": {
-    "scripts": ["hot-reload.js", "iconChangeBackground.js"],
+    "scripts": ["hot-reload.js", "ytBackgroundScript.js"],
     "persistent": false
   },
   "content_scripts": [

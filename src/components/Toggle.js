@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react"
 
-function EllipsisScroll(props) {
+function Toggle(props) {
   const itemContainerRef = useRef()
   const itemRef = useRef()
 
@@ -27,30 +27,11 @@ function EllipsisScroll(props) {
   const hasTransition = Object.keys(itemScrollStyle).length > 0
 
   return (
-    <div
-      className={`scroll-item ${classNames && classNames}`}
-      ref={itemContainerRef}
-      onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
-      onClick={() => onClick && onClick()}
-      style={{
-        textOverflow: hasTransition > 0 ? "initial" : "ellipsis"
-      }}
-    >
-      <span
-        className="scroll-item-span"
-        ref={itemRef}
-        style={{
-          left: `${itemScrollStyle.left || 0}px`,
-          transition: `left ${
-            hasTransition ? itemScrollStyle.time : 0.2
-          }s linear`
-        }}
-      >
-        {text}
-      </span>
+    <div class="toggle-checkbox">
+      <input type="checkbox" id="switch" />
+      <label for="switch">Toggle</label>
     </div>
   )
 }
 
-export default EllipsisScroll
+export default Toggle

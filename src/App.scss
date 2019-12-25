@@ -124,6 +124,11 @@
     .controls {
       display: flex;
       align-items: center;
+      .player-icon {
+        &:not(:last-child) {
+          margin-right: 8px;
+        }
+      }
     }
   }
 
@@ -262,7 +267,6 @@ input[type="range"]::-ms-track {
 // autoplay-tracks
 .autoplay-container {
   height: 100%;
-  overflow-y: scroll;
   background: #201c1c;
   position: absolute;
   top: 0;
@@ -270,6 +274,21 @@ input[type="range"]::-ms-track {
   padding: 0 10px;
   padding-top: 20px;
   z-index: 21;
+  .suggestions-header-container {
+    display: flex;
+    width: 100%;
+    height: 20px;
+    align-items: center;
+    justify-content: flex-start;
+    position: fixed;
+    top: 10px;
+    left: 5px;
+  }
+  .suggestions-results {
+    overflow-y: scroll;
+    height: calc(100% - 10px);
+    margin-top: 10px;
+  }
 }
 
 // search-items-tracks
@@ -360,7 +379,7 @@ input[type="range"]::-ms-track {
   display: flex;
   align-items: center;
   left: 10px;
-  bottom: 10px;
+  bottom: 18px;
   height: 26px;
   .volume-slider {
     margin: 0 12px;
@@ -662,6 +681,7 @@ input[type="range"]::-ms-track {
   top: 0;
   left: 0;
   z-index: 18;
+  background: transparent;
   transition: all 0.3s ease-in-out;
   &--filter {
     background: rgba(31, 29, 29, 0.6);
