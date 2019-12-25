@@ -37,8 +37,11 @@ const Player = props => {
   return (
     <>
       <ImageVibrant videoThumbNail={videoThumbNail} />
-      <EllipsisScroll classNames="video-title" text={videoTitle} />
-      {/* <span className="video-channel-title ellipsis">{channelName}</span> */}
+      <EllipsisScroll
+        classNames="video-title"
+        text={videoTitle.replace("&#39;", "'")}
+      />
+      <span className="video-channel-title ellipsis">{channelName}</span>
       <Timer
         videoCurrentTime={videoCurrentTime}
         videoDuration={videoDuration}

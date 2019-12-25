@@ -77,7 +77,7 @@ class TrackSuggestions extends React.Component {
           return (
             <EllipsisScroll
               key={a.title}
-              text={a.title.replace(/&amp;/g, "&")}
+              text={a.title.replace(/&amp;/g, "&").replace("&#39;", "'")}
               classNames={`result-item ellipsis ${a.id === videoId &&
                 "active"}`}
               onClick={() =>

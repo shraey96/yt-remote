@@ -32,6 +32,7 @@ class App extends React.Component {
     const YOUTUBE_URL_REGEX = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/
     chrome.tabs.query({}, tabs => {
       const youtubeTabsList = tabs.filter(t => YOUTUBE_URL_REGEX.test(t.url))
+
       const youtubeTabKeys = {}
       youtubeTabsList.map(k => {
         youtubeTabKeys[k.id] = { ...k }

@@ -147,6 +147,7 @@
 
   .video-title {
     margin: 20px 0;
+    margin-bottom: 0px;
     z-index: 20;
   }
 
@@ -156,9 +157,11 @@
     text-align: center;
     display: block;
     font-weight: 500;
-    font-size: 10px;
+    font-size: 11px;
     line-height: 14px;
-    color: #ef4056;
+    opacity: 0.7;
+    margin-top: 4px;
+    margin-bottom: 8px;
   }
 
   .timer-container {
@@ -185,7 +188,8 @@
     width: 100%;
     display: flex;
     justify-content: space-evenly;
-    margin-top: 20px;
+    // margin-top: 20px;
+    margin-top: 10px;
     position: relative;
     z-index: 20;
   }
