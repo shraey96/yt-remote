@@ -193,10 +193,15 @@
     width: 100%;
     display: flex;
     justify-content: space-evenly;
-    // margin-top: 20px;
     margin-top: 10px;
     position: relative;
     z-index: 20;
+    transition: all 0.3s ease-in-out;
+    transition-delay: 0.1s;
+    &.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 }
 
@@ -379,7 +384,7 @@ input[type="range"]::-ms-track {
   display: flex;
   align-items: center;
   left: 10px;
-  bottom: 18px;
+  bottom: 16px;
   height: 26px;
   .volume-slider {
     margin: 0 12px;

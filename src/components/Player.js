@@ -111,7 +111,7 @@ const Player = props => {
           </svg>
         </span>
       </div>
-      <div className="player-ui-toggle">
+      <div className={`player-ui-toggle ${openVolumeSlider && "hide"}`}>
         <span
           className="player-icon list"
           onClick={() => {
