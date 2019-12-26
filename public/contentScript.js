@@ -159,7 +159,7 @@ const getDefaultVideoStats = () => {
     isVideoBuffering: false,
     channelName: document.querySelector(".style-scope ytd-channel-name a")
       .innerText,
-    isRepeat: youtubePlayerDOM.loop || false
+    isRepeat: checkVideoRepeat()
   }
   setTimeout(() => {
     skipAdd()
@@ -168,7 +168,18 @@ const getDefaultVideoStats = () => {
 }
 
 const setVideoRepeat = repeat => {
-  youtubePlayerDOM.loop = repeat || false
+  const repeatConfig = repeat || false
+  youtubePlayerDOM.loop = repeatConfig
+  sessionStorage.setItem("yt-remote-repeat", repeatConfig)
+}
+
+const checkVideoRepeat = () => {
+  const remoteRepeat = sessionStorage.getItem("yt-remote-repeat")
+  const hasRepeat =
+    remoteRepeat !== null
+      ? JSON.parse(remoteRepeat)
+      : youtubePlayerDOM.loop || false
+  return hasRepeat
 }
 
 const getVideoId = () => {
@@ -222,8 +233,7 @@ const setVolume = volume => {
 }
 
 const getVolume = () => {
-  if (youtubePlayerDOM.muted) return 0
-  else return youtubePlayerDOM.volume
+  return getSessionStorageVolume()
 }
 
 const skipTrack = val => {
@@ -231,11 +241,13 @@ const skipTrack = val => {
     `.ytp-${val === 0 ? "prev" : "next"}-button`
   )
   if (skipBtnDOM) skipBtnDOM.click()
+  removeRepeat()
 }
 
 const playVideoId = id => {
   const videoIdAnchor = document.querySelector(`a[href='${id}']`)
   if (videoIdAnchor) videoIdAnchor.click()
+  removeRepeat()
   setTimeout(() => {
     skipAdd()
   }, 5000)
@@ -246,6 +258,7 @@ const playVideoId = id => {
 
 const playNewVideo = id => {
   const videoUrl = `https://www.youtube.com/watch?v=${id}`
+  removeRepeat()
   window.location = videoUrl
 }
 
@@ -307,4 +320,21 @@ const setSessionStorageVol = vol => {
   sessionStorageVol.data = JSON.stringify(sessionStorageVol.data)
   sessionStorageVol.creation = new Date().getTime()
   sessionStorage.setItem("yt-player-volume", JSON.stringify(sessionStorageVol))
+}
+
+const getSessionStorageVolume = () => {
+  let domVolume = youtubePlayerDOM.muted ? 0 : youtubePlayerDOM.volume
+  let sessionStorageVol =
+    sessionStorage.getItem("yt-player-volume") !== null
+      ? JSON.parse(JSON.parse(sessionStorage.getItem("yt-player-volume")).data)
+          .volume / 100
+      : domVolume
+
+  return sessionStorageVol
+}
+
+const removeRepeat = () => {
+  sessionStorage.removeItem("yt-remote-repeat")
+  youtubePlayerDOM.loop = false
+  sendMessage(getDefaultVideoStats())
 }

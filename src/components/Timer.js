@@ -46,6 +46,7 @@ class Timer extends React.Component {
       prevProps.videoId === this.props.videoId
     ) {
       this.stopSeekTimer()
+
       // if (
       //   prevProps.isVideoBuffering !== this.props.isVideoBuffering &&
       //   !this.props.isVideoBuffering
@@ -66,7 +67,14 @@ class Timer extends React.Component {
       }
     }
     if (prevProps.videoId === this.props.videoId) {
-      // console.log(9999)
+      // if (this.props.isRepeat) {
+      //   if (this.timeSeekInterval === null) {
+      //     console.log("repeat starting...")
+      //     console.log("videoRepeating.....")
+      //     console.log(5555, this.props)
+      //     this.startSeekTimer(this.props.videoCurrentTime || 0)
+      //   }
+      // }
     }
   }
 
@@ -74,16 +82,17 @@ class Timer extends React.Component {
     this.stopSeekTimer()
   }
 
-  startSeekTimer = () => {
+  startSeekTimer = videoCurrentTime => {
     this.timeSeekInterval = setInterval(() => {
       this.setState({
-        videoCurrentTime: this.state.videoCurrentTime + 1
+        videoCurrentTime: (videoCurrentTime || this.state.videoCurrentTime) + 1
       })
     }, 1000)
   }
 
   stopSeekTimer = () => {
     clearInterval(this.timeSeekInterval)
+    this.timeSeekInterval = null
   }
 
   seekSong = val => {
