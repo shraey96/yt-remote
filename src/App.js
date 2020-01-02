@@ -43,9 +43,9 @@ class App extends React.Component {
           activeYoutubeTabKeys: youtubeTabKeys
         },
         () => {
-          youtubeTabsList.map(t => {
+          youtubeTabsList.map(t =>
             this.sendMessage({ type: "getVideoInfoInit", tabId: t.id }, t.id)
-          })
+          )
           chrome.storage.local.get(["selectedTabId"], result => {
             const storageSelectedTab = result.selectedTabId
 

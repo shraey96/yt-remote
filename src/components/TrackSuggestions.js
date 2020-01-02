@@ -47,6 +47,7 @@ class TrackSuggestions extends React.Component {
                 if (!a.includes(videoId) && a !== "selectedTabId") {
                   chrome.storage.local.remove(a)
                 }
+                return a
               })
             })
           })
