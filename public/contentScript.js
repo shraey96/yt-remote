@@ -2,6 +2,7 @@ let youtubePlayerDOM = document.querySelector("video")
 let previousVideoSrc = ""
 
 console.log(`#### Running Content Script From Public ####`)
+console.log("@@@@@")
 
 window.addEventListener("load", () => {
   youtubePlayerDOM = document.querySelector("video") || youtubePlayerDOM
@@ -339,3 +340,27 @@ const removeRepeat = () => {
   youtubePlayerDOM.loop = false
   sendMessage(getDefaultVideoStats())
 }
+
+const skipAddFun = () => {
+  var observer = new MutationObserver(function(mutations) {
+    var adDOM = document.querySelector(".video-ads")
+
+    if (adDOM && adDOM.children.length > 0) {
+      var skipBtn = document.querySelector(".ytp-ad-skip-button")
+      document.querySelector("video").currentTime = document.querySelector(
+        "video"
+      ).duration
+      if (skipBtn) {
+        skipBtn.click()
+      }
+    }
+  })
+  observer.observe(document, {
+    attributes: false,
+    childList: true,
+    characterData: false,
+    subtree: true
+  })
+}
+
+// skipAddFun()
