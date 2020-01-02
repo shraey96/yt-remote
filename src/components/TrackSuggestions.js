@@ -1,3 +1,5 @@
+/*global chrome*/
+
 import React from "react"
 import EllipsisScroll from "./EllipsisScroll"
 
@@ -5,57 +7,63 @@ class TrackSuggestions extends React.Component {
   constructor() {
     super()
     this.state = {
-      isFetchingTracks: false
+      isFetchingTracks: false,
+      apiAutoPlayTracks: []
     }
   }
 
-  // componentDidMount() {
-  //   this.playerDOM = document.querySelector(".autoplay-container")
-  //   this.playerDOM.addEventListener("scroll", this.calcuteScroll)
-  // }
+  componentDidMount() {
+    const { videoId } = this.props.videoInfo
+    chrome.storage.local.get([`autotracks-${videoId}`], result => {
+      const storageAutoTracks = result[`autotracks-${videoId}`]
 
-  // componentWillUnmount() {
-  //   this.playerDOM.removeEventListener("scroll", this.calcuteScroll)
-  // }
-
-  // componentDidUpdate(prevProps) {
-  //   if (
-  //     prevProps.videoInfo.autoPlayTracks.length !==
-  //     this.props.videoInfo.autoPlayTracks.length
-  //   ) {
-  //     this.setState({
-  //       isFetchingTracks: false
-  //     })
-  //   }
-  // }
-
-  // calcuteScroll = () => {
-  //   if (this.props.videoInfo.autoPlayTracks.length > 90) return
-  //   const hasScrolledToBottom =
-  //     this.playerDOM.scrollHeight - this.playerDOM.scrollTop ===
-  //     this.playerDOM.clientHeight
-  //   if (hasScrolledToBottom && !this.state.isFetchingTracks) {
-  //     this.setState(
-  //       {
-  //         isFetchingTracks: true
-  //       },
-  //       () => {
-  //         this.props.sendMessage({
-  //           type: "scrollBottom"
-  //         })
-  //         setTimeout(() => {
-  //           this.setState({
-  //             isFetchingTracks: false
-  //           })
-  //         }, 2000)
-  //       }
-  //     )
-  //   }
-  // }
+      if (!storageAutoTracks) {
+        const apiKeys = [
+          "AIzaSyC88bxeDCgQGOq-Jo2wS1qdzcUHndGRbNw",
+          "AIzaSyDq5puPK5yCgfMrdD5JnZMnzIcSWi3kif4"
+        ]
+        const key = apiKeys[Math.floor(Math.random() * 2) + 1 - 1]
+        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&key=${key}&maxResults=25&order=relevance`
+        fetch(url)
+          .then(res => res.json())
+          .then(data => {
+            const storageItems = data.items.map(i => ({
+              title: i.snippet.title,
+              link: `https://www.youtube.com/watch?v=${i.id.videoId}`,
+              id: i.id.videoId,
+              type: "apiTrack"
+            }))
+            chrome.storage.local.set(
+              { [`autotracks-${videoId}`]: storageItems },
+              () => {
+                this.setState({
+                  apiAutoPlayTracks: storageItems
+                })
+              }
+            )
+            chrome.storage.local.get(function(result) {
+              const storageAllAutoplay = Object.keys(result) || []
+              storageAllAutoplay.map(a => {
+                if (!a.includes(videoId) && a !== "selectedTabId") {
+                  chrome.storage.local.remove(a)
+                }
+              })
+            })
+          })
+          .catch(err => console.log(111, err))
+      } else {
+        this.setState({
+          apiAutoPlayTracks: storageAutoTracks
+        })
+      }
+    })
+  }
 
   render() {
     const { autoPlayTracks = [], videoId } = this.props.videoInfo
-    const { isFetchingTracks } = this.state
+    const { isFetchingTracks, apiAutoPlayTracks } = this.state
+
+    const tracksToMap = [...autoPlayTracks, ...apiAutoPlayTracks]
 
     return (
       <>
@@ -76,7 +84,8 @@ class TrackSuggestions extends React.Component {
           </span>
         </div>
         <div className="suggestions-results">
-          {autoPlayTracks.map(a => {
+          {tracksToMap.map(a => {
+            const isDOMTrack = a.type === "domTrack"
             return (
               <EllipsisScroll
                 key={a.title}
@@ -85,8 +94,10 @@ class TrackSuggestions extends React.Component {
                   "active"}`}
                 onClick={() =>
                   this.props.sendMessage({
-                    type: "playVideoId",
-                    vLink: a.link
+                    type: isDOMTrack ? "playVideoId" : "playNewVideo",
+                    [isDOMTrack ? "vLink" : "videoId"]: isDOMTrack
+                      ? a.link
+                      : a.id
                   })
                 }
               />

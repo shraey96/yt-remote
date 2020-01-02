@@ -286,7 +286,8 @@ const getAutoplayTracks = () => {
       return {
         title: d.innerText,
         link: href,
-        id: href.split("?")[1].replace("v=", "")
+        id: href.split("?")[1].replace("v=", ""),
+        type: "domTrack"
       }
     })
   }
