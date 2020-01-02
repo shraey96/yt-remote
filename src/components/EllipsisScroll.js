@@ -11,10 +11,6 @@ function EllipsisScroll(props) {
     if (textWidth > 179) {
       let length = textWidth - 180
       let time = length / 120
-      console.log(
-        4545,
-        `textWidth: ${textWidth}, length: ${length}, time: ${time}, containerWidth: ${itemContainerRef.current.offsetWidth}`
-      )
       setItemScrollStyle({ time: Math.abs(time), left: -Math.abs(length) })
     }
   }
@@ -43,7 +39,7 @@ function EllipsisScroll(props) {
         style={{
           left: `${itemScrollStyle.left || 0}px`,
           transition: `left ${
-            hasTransition ? itemScrollStyle.time : 0.2
+            hasTransition ? itemScrollStyle.time : 0.3
           }s linear`
         }}
       >
