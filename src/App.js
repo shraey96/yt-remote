@@ -9,6 +9,7 @@ import Player from "./components/Player"
 import TrackSuggestions from "./components/TrackSuggestions"
 import SearchItems from "./components/SearchItems"
 import TabListItem from "./components/TabListItem"
+import Settings from "./components/Settings"
 
 import "./App.scss"
 
@@ -292,7 +293,17 @@ class App extends React.Component {
                       <p>Remote</p>
                     </div>
                     <div className="controls">
-                      <span className="player-icon settings">
+                      <span
+                        className="player-icon settings"
+                        onClick={() =>
+                          this.setState({
+                            activeSection:
+                              activeSection === "settings"
+                                ? "player"
+                                : "settings"
+                          })
+                        }
+                      >
                         <svg
                           width="14"
                           height="14"
@@ -383,6 +394,16 @@ class App extends React.Component {
                           }
                           sendMessage={msg => this.sendMessage(msg)}
                         />
+                      </div>
+                    </CSSTransition>
+                  )}
+                  {activeSection === "settings" && (
+                    <CSSTransition
+                      timeout={350}
+                      classNames="heightDown-animation"
+                    >
+                      <div className="settings-container">
+                        <Settings />
                       </div>
                     </CSSTransition>
                   )}

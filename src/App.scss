@@ -348,7 +348,6 @@ input[type="range"]::-ms-track {
   height: 100%;
   width: calc(100%);
   transform: translateX(0px);
-  height: 100%;
   padding: 0 10px;
   z-index: 20;
   border-radius: 4px;
@@ -381,6 +380,18 @@ input[type="range"]::-ms-track {
     overflow: auto;
     height: 100%;
   }
+}
+
+.settings-container {
+  background: #201c1c;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  padding: 0 10px;
+  z-index: 20;
+  border-radius: 4px;
 }
 
 // helpers //
@@ -598,6 +609,26 @@ input[type="range"]::-ms-track {
 .fadeRight-animation-exit-active {
   opacity: 0;
   transform: translateX(200px);
+  transition: all 350ms ease-in-out;
+}
+
+// fade-down animation //
+.heightDown-animation-enter {
+  height: 0;
+  opacity: 0;
+}
+.heightDown-animation-enter-active {
+  height: 280px;
+  opacity: 1;
+  transition: all 350ms ease-in-out;
+}
+.heightDown-animation-exit {
+  height: 280px;
+  opacity: 1;
+}
+.heightDown-animation-exit-active {
+  opacity: 0;
+  height: 0;
   transition: all 350ms ease-in-out;
 }
 
