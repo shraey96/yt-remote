@@ -21,5 +21,10 @@
       "js": ["contentScript.js"]
     }
   ],
+  "icons": {
+    "16": "icons-main/logo_16_c.png",
+    "48": "icons-main/logo_48_c.png",
+    "128": "icons-main/logo_128_c.png"
+  },
   "manifest_version": 2
 }

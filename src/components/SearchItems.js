@@ -35,11 +35,12 @@ const SearchItems = props => {
 
   return (
     <>
-      <span
-        className="ui-icon back search-items"
-        onClick={() => props.toggleUI("player")}
-      >
-        <svg
+      <div className="search-view-container">
+        <span
+          className="ui-icon back search-items"
+          onClick={() => props.toggleUI("player")}
+        >
+          {/* <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
@@ -47,17 +48,30 @@ const SearchItems = props => {
         >
           <path d="M0 0h24v24H0z" fill="none" />
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-        </svg>
-      </span>
-      <div className="search-container">
-        <input
-          type="text"
-          value={search}
-          className="search-box"
-          placeholder="Search ..."
-          autoFocus
-          onChange={e => handleChange(e.target.value)}
-        />
+        </svg> */}
+          <svg
+            width="5"
+            height="9"
+            viewBox="0 0 5 9"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1.94123e-07 4.37743C1.94123e-07 4.58611 0.0806454 4.76082 0.237192 4.92097L3.88046 8.55588C4.0038 8.68691 4.1556 8.75 4.33586 8.75C4.70588 8.75 5 8.44911 5 8.07543C5 7.89102 4.92884 7.71631 4.79602 7.58042L1.57021 4.37743L4.79602 1.16958C4.9241 1.03369 5 0.863838 5 0.67457C5 0.300887 4.70588 0 4.33586 0C4.1556 0 4.0038 0.0679423 3.87571 0.194121L0.237192 3.83389C0.0759015 3.99889 1.94123e-07 4.16875 1.94123e-07 4.37743Z"
+              fill="white"
+            />
+          </svg>
+        </span>
+        <div className="search-container">
+          <input
+            type="text"
+            value={search}
+            className="search-box"
+            placeholder="Search ..."
+            autoFocus
+            onChange={e => handleChange(e.target.value)}
+          />
+        </div>
       </div>
       <div className="results-container">
         {searchResults.map(s => {

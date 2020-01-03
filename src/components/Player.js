@@ -113,7 +113,7 @@ const Player = props => {
       </div>
       <div className={`player-ui-toggle ${openVolumeSlider && "hide"}`}>
         <span
-          className="player-icon list"
+          className="player-ui-toggle-icons player-icon list"
           onClick={() => {
             props.sendMessage({ type: "fetchAutoPlayTracks" })
             props.toggleUI("auto-tracks")
@@ -131,7 +131,7 @@ const Player = props => {
         </span>
 
         <span
-          className="volume-icon volume"
+          className="player-ui-toggle-icons volume-icon volume"
           onClick={() => toggleVolumeSlider(true)}
         >
           {videoVolume === 0 && (
@@ -178,7 +178,8 @@ const Player = props => {
           )}
         </span>
         <span
-          className={`player-icon repeat ${isRepeat && "active"}`}
+          className={`player-ui-toggle-icons player-icon repeat ${isRepeat &&
+            "active"}`}
           onClick={() =>
             props.sendMessage({ type: "setRepeat", repeat: !isRepeat })
           }
