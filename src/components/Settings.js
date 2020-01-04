@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 
-function Settings() {
-  const [pallete, setPallete] = useState(null)
-
+function Settings({ videoInfo, sendMessage }) {
   return (
-    <>
-      <p>Test</p>
-    </>
+    <div className="settings-container">
+      <div className="setting-item">
+        <p>Skip Ads</p>
+        <input
+          type="checkbox"
+          id="switch"
+          checked={videoInfo.skipAdEnabled}
+          onChange={() =>
+            sendMessage({ type: "setAdSkip", skip: !videoInfo.skipAdEnabled })
+          }
+        />
+        <label for="switch" className="toggleLabel"></label>
+      </div>
+    </div>
   )
 }
 

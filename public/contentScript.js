@@ -60,6 +60,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       setVolume(request.volume)
       sendMessage(getDefaultVideoStats())
       break
+    case "setAdSkip":
+      setSkipAd(request.skip)
+      sendMessage(getDefaultVideoStats())
+      break
     case "scrollBottom":
       scrollToBottom()
       break
@@ -160,11 +164,9 @@ const getDefaultVideoStats = () => {
     isVideoBuffering: false,
     channelName: document.querySelector(".style-scope ytd-channel-name a")
       .innerText,
-    isRepeat: checkVideoRepeat()
+    isRepeat: checkVideoRepeat(),
+    skipAdEnabled: checkAdSkip()
   }
-  setTimeout(() => {
-    skipAdd()
-  }, 5000)
   return videoInfo
 }
 
@@ -249,9 +251,7 @@ const playVideoId = id => {
   const videoIdAnchor = document.querySelector(`a[href='${id}']`)
   if (videoIdAnchor) videoIdAnchor.click()
   removeRepeat()
-  setTimeout(() => {
-    skipAdd()
-  }, 5000)
+
   setTimeout(() => {
     scrollToBottom()
   }, 1000)
@@ -305,11 +305,6 @@ const scrollToBottom = () => {
   }, 1000)
 }
 
-const skipAdd = () => {
-  const addSkipBtn = document.querySelector(".ytp-ad-skip-button")
-  if (addSkipBtn || addSkipBtn !== null) addSkipBtn.click()
-}
-
 const setSessionStorageVol = vol => {
   let sessionStorageVol =
     sessionStorage.getItem("yt-player-volume") ||
@@ -341,12 +336,21 @@ const removeRepeat = () => {
   sendMessage(getDefaultVideoStats())
 }
 
-const skipAddFun = () => {
-  var observer = new MutationObserver(function(mutations) {
-    var adDOM = document.querySelector(".video-ads")
+const checkAdSkip = () => {
+  const isSkipAd = sessionStorage.getItem("yt-remote-adskip")
+  return isSkipAd === null ? false : JSON.parse(isSkipAd)
+}
 
-    if (adDOM && adDOM.children.length > 0) {
-      var skipBtn = document.querySelector(".ytp-ad-skip-button")
+const setSkipAd = val => {
+  sessionStorage.setItem("yt-remote-adskip", val)
+}
+
+const skipAd = () => {
+  let observer = new MutationObserver(function(mutations) {
+    let adDOM = document.querySelector(".video-ads")
+
+    if (adDOM && adDOM.children.length > 0 && checkAdSkip()) {
+      let skipBtn = document.querySelector(".ytp-ad-skip-button")
       document.querySelector("video").currentTime = document.querySelector(
         "video"
       ).duration
@@ -363,4 +367,4 @@ const skipAddFun = () => {
   })
 }
 
-// skipAddFun()
+skipAd()

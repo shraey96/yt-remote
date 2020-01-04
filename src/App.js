@@ -225,7 +225,8 @@ class App extends React.Component {
                         this.setState(
                           {
                             selectedTabId: t.id,
-                            videoInfo: activeYoutubeTabKeys[t.id]
+                            videoInfo: activeYoutubeTabKeys[t.id],
+                            activeSection: "player"
                           },
                           () => this.bindMessageListener()
                         )
@@ -402,9 +403,10 @@ class App extends React.Component {
                       timeout={350}
                       classNames="heightDown-animation"
                     >
-                      <div className="settings-container">
-                        <Settings />
-                      </div>
+                      <Settings
+                        videoInfo={videoInfo}
+                        sendMessage={msg => this.sendMessage(msg)}
+                      />
                     </CSSTransition>
                   )}
                 </TransitionGroup>
