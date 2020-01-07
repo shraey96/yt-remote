@@ -451,8 +451,10 @@ input[type="range"]::-ms-track {
   display: flex;
   align-items: center;
   left: 10px;
-  bottom: 16px;
-  height: 26px;
+  // bottom: 16px;
+  // height: 26px;
+  bottom: 0px;
+  height: 35px;
   .volume-slider {
     margin: 0 12px;
   }

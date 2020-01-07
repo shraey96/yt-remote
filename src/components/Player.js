@@ -33,7 +33,7 @@ const Player = props => {
     isRepeat = false,
     videoVolume = 0
   } = props.videoInfo
-  console.log(121212, props)
+
   return (
     <>
       <ImageVibrant videoThumbNail={videoThumbNail} />
@@ -197,7 +197,7 @@ const Player = props => {
       </div>
       <TransitionGroup>
         {openVolumeSlider && (
-          <CSSTransition timeout={350} classNames="width-animation">
+          <CSSTransition timeout={350} classNames="fadeUp-animation">
             <div className="volume-container" ref={volumeRef}>
               <input
                 className="volume-slider"
