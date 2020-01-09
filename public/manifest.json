@@ -1,6 +1,8 @@
 {
   "name": "YouTube Music Remote",
   "version": "1.0.1",
+  "short_name": "YouTube Music Remote",
+  "description": "A chrome extension to control your YouTube tabs / playback from any website / tabs.",
   "browser_action": {
     "default_popup": "index.html"
   },
