@@ -367,4 +367,17 @@ const skipAd = () => {
   })
 }
 
+const resumePlayback = () => {
+  const resumePlaybackDOM = document.querySelector(
+    ".yt-confirm-dialog-renderer #confirm-button"
+  )
+  if (resumePlaybackDOM) {
+    resumePlaybackDOM.click()
+  }
+}
+
 skipAd()
+
+setInterval(() => {
+  resumePlayback()
+}, 1000)
