@@ -1,8 +1,7 @@
 let youtubePlayerDOM = document.querySelector("video")
 let previousVideoSrc = ""
 
-console.log(`#### Running Content Script From Public ####`)
-console.log("@@@@@")
+console.log(`#### Running Content Script From YouTube Remote ####`)
 
 window.addEventListener("load", () => {
   youtubePlayerDOM = document.querySelector("video") || youtubePlayerDOM
@@ -17,12 +16,12 @@ window.addEventListener("yt-navigate-finish", () => {
 })
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log(
-    sender.tab
-      ? "from a content script:" + sender.tab.url
-      : "from the extension"
-  )
-  console.log(1111, request, sender, request.type)
+  // console.log(
+  //   sender.tab
+  //     ? "from a content script:" + sender.tab.url
+  //     : "from the extension"
+  // )
+  // console.log(1111, request, sender, request.type)
 
   switch (request.type) {
     case "getVideoInfoInit":
@@ -142,7 +141,7 @@ if (youtubePlayerDOM && youtubePlayerDOM !== null) {
 
 const sendMessage = message => {
   chrome.runtime.sendMessage(message, response => {
-    console.log(response)
+    // console.log(response)
   })
 }
 
