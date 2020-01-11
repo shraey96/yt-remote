@@ -29,6 +29,10 @@ class App extends React.Component {
     this.findYoutubeTabs()
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKeyDown)
+  }
+
   findYoutubeTabs = () => {
     const YOUTUBE_URL_REGEX = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/
     chrome.tabs.query({}, tabs => {
@@ -61,6 +65,7 @@ class App extends React.Component {
                   selectedTabId: storageSelectedTab
                 },
                 () => {
+                  window.addEventListener("keydown", this.handleKeyDown)
                   this.bindMessageListener()
                 }
               )
@@ -69,6 +74,22 @@ class App extends React.Component {
         }
       )
     })
+  }
+
+  handleKeyDown = e => {
+    const { videoInfo, activeSection } = this.state
+    const { isVideoPlaying } = videoInfo
+    if (activeSection !== "player") return
+    if (videoInfo === null) return
+    if (e.keyCode === 32) {
+      this.sendMessage({
+        type: isVideoPlaying ? "pauseVideo" : "playVideo"
+      })
+    }
+    if (e.ctrlKey) {
+      e.keyCode === 39 && this.sendMessage({ type: "skipTrack", skip: 1 })
+      e.keyCode === 37 && this.sendMessage({ type: "skipTrack", skip: 0 })
+    }
   }
 
   bindMessageListener = () => {

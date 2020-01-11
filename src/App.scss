@@ -611,6 +611,12 @@ input:checked + .toggleLabel:after {
   width: 100%;
   padding: 0 0 10px 0;
 
+  &.api {
+    position: fixed;
+    top: 50%;
+    left: 0;
+  }
+
   &--dot {
     animation: dot-keyframes 1.5s infinite ease-in-out;
     background-color: #b7afaf;
@@ -629,6 +635,18 @@ input:checked + .toggleLabel:after {
       margin-right: 0;
     }
   }
+}
+
+.api-error {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  color: #ab6161;
+  margin-bottom: 8px;
 }
 
 // transition group animations //

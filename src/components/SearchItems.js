@@ -4,13 +4,16 @@ import EllipsisScroll from "./EllipsisScroll"
 
 const SearchItems = props => {
   const [search, setSearchVal] = useState("")
-  const apiKeys = [
-    "AIzaSyC88bxeDCgQGOq-Jo2wS1qdzcUHndGRbNw",
-    "AIzaSyDq5puPK5yCgfMrdD5JnZMnzIcSWi3kif4"
-  ]
-  // 'AIzaSyAsH4766YGg_JEJZTIXWORBVzkn0BidVgE'
+  const [hasAPIError, toggleAPIError] = useState(false)
+  const [apiLoading, toggleAPILoading] = useState(false)
   const [searchResults, setSearchResults] = useState([])
   const [searchTimeout, setSearchTimeout] = useState(null)
+
+  const apiKeys = [
+    "AIzaSyC88bxeDCgQGOq-Jo2wS1qdzcUHndGRbNw",
+    "AIzaSyDq5puPK5yCgfMrdD5JnZMnzIcSWi3kif4",
+    "AIzaSyAsH4766YGg_JEJZTIXWORBVzkn0BidVgE"
+  ]
 
   function handleChange(val) {
     setSearchVal(val)
@@ -20,14 +23,24 @@ const SearchItems = props => {
         setTimeout(() => {
           const key = apiKeys[Math.floor(Math.random() * 2) + 1 - 1]
           const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${key}&type=video&q=${search}&order=relevance&maxResults=25`
+          toggleAPILoading(true)
           fetch(url)
             .then(res => res.json())
             .then(data => {
               if (data.items.length > 0) {
                 setSearchResults(data.items)
               }
+              toggleAPILoading(false)
+              hasAPIError && toggleAPIError(false)
             })
-            .catch(err => clearTimeout(searchTimeout))
+            .catch(err => {
+              toggleAPIError(true)
+              toggleAPILoading(false)
+              setTimeout(() => {
+                toggleAPIError(false)
+              }, 2000)
+              clearTimeout(searchTimeout)
+            })
         }, 1200)
       )
     }
@@ -83,6 +96,14 @@ const SearchItems = props => {
           )
         })}
       </div>
+      {apiLoading && (
+        <div className="loading-dots api">
+          <div className="loading-dots--dot"></div>
+          <div className="loading-dots--dot"></div>
+          <div className="loading-dots--dot"></div>
+        </div>
+      )}
+      {hasAPIError && <span className="api-error">YouTube API Error</span>}
     </>
   )
 }

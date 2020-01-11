@@ -1,7 +1,8 @@
 let youtubePlayerDOM = document.querySelector("video")
 let previousVideoSrc = ""
 
-console.log(`#### Running Content Script From YouTube Remote ####`)
+// console.log(`#### Running Content Script From Public ####`)
+// console.log("@@@@@")
 
 window.addEventListener("load", () => {
   youtubePlayerDOM = document.querySelector("video") || youtubePlayerDOM
@@ -366,4 +367,17 @@ const skipAd = () => {
   })
 }
 
+const resumePlayback = () => {
+  const resumePlaybackDOM = document.querySelector(
+    ".yt-confirm-dialog-renderer #confirm-button"
+  )
+  if (resumePlaybackDOM) {
+    resumePlaybackDOM.click()
+  }
+}
+
 skipAd()
+
+setInterval(() => {
+  resumePlayback()
+}, 1000)

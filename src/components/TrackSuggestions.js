@@ -20,7 +20,8 @@ class TrackSuggestions extends React.Component {
       if (!storageAutoTracks) {
         const apiKeys = [
           "AIzaSyC88bxeDCgQGOq-Jo2wS1qdzcUHndGRbNw",
-          "AIzaSyDq5puPK5yCgfMrdD5JnZMnzIcSWi3kif4"
+          "AIzaSyDq5puPK5yCgfMrdD5JnZMnzIcSWi3kif4",
+          "AIzaSyAsH4766YGg_JEJZTIXWORBVzkn0BidVgE"
         ]
         const key = apiKeys[Math.floor(Math.random() * 2) + 1 - 1]
         const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&key=${key}&maxResults=25&order=relevance`
