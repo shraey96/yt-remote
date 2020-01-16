@@ -1,6 +1,6 @@
 {
   "name": "YouTube Remote",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "short_name": "YouTube Remote",
   "description": "A chrome extension to control your YouTube tabs / playback from any website / tabs.",
   "browser_action": {
