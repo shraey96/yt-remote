@@ -347,9 +347,9 @@ const setSkipAd = val => {
 
 const skipAd = () => {
   let observer = new MutationObserver(function(mutations) {
-    let adDOM = document.querySelector(".video-ads")
+    let adDOM = document.querySelector(".ytp-ad-player-overlay")
 
-    if (adDOM && adDOM.children.length > 0 && checkAdSkip()) {
+    if (adDOM && checkAdSkip()) {
       let skipBtn = document.querySelector(".ytp-ad-skip-button")
       document.querySelector("video").currentTime = document.querySelector(
         "video"
@@ -358,6 +358,16 @@ const skipAd = () => {
         skipBtn.click()
       }
     }
+
+    // if (adDOM && adDOM.children.length > 0 && checkAdSkip()) {
+    //   let skipBtn = document.querySelector(".ytp-ad-skip-button")
+    //   document.querySelector("video").currentTime = document.querySelector(
+    //     "video"
+    //   ).duration
+    //   if (skipBtn) {
+    //     skipBtn.click()
+    //   }
+    // }
   })
   observer.observe(document, {
     attributes: false,
