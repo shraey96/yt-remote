@@ -21,6 +21,7 @@ class App extends React.Component {
       videoInfo: null,
       activeSection: "player",
       activeYoutubeTabKeys: [],
+      selectVideoMode: false,
       selectedTabId: null
     }
   }
@@ -35,8 +36,18 @@ class App extends React.Component {
 
   findYoutubeTabs = () => {
     const YOUTUBE_URL_REGEX = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/
+    const YOUTUBE_ROOT_REGEX = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/?)$/
+
     chrome.tabs.query({}, tabs => {
       const youtubeTabsList = tabs.filter(t => YOUTUBE_URL_REGEX.test(t.url))
+
+      if (youtubeTabsList.length === 0) {
+        this.setState({
+          selectVideoMode:
+            tabs.filter(t => YOUTUBE_ROOT_REGEX.test(t.url)).length > 0
+        })
+        return
+      }
 
       const youtubeTabKeys = {}
       youtubeTabsList.map(k => {
@@ -188,10 +199,12 @@ class App extends React.Component {
       videoInfo,
       activeSection,
       activeYoutubeTabKeys,
-      selectedTabId
+      selectedTabId,
+      selectVideoMode
     } = this.state
 
     const activeYoutubeTabs = Object.values(activeYoutubeTabKeys)
+
     console.log(this.state)
     return (
       <div className="App">
@@ -262,21 +275,25 @@ class App extends React.Component {
           <>
             {videoInfo === null || activeYoutubeTabs.length === 0 ? (
               <div className="loader-container">
-                <div className="loader-elements">
-                  <div className="loader3">
-                    <span></span>
-                    <span></span>
+                {!selectVideoMode ? (
+                  <div className="loader-elements">
+                    <div className="loader3">
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <p>Connecting to YouTube</p>
+                    <p
+                      className="new-tab-link"
+                      onClick={() =>
+                        chrome.tabs.create({ url: "https://youtube.com" })
+                      }
+                    >
+                      Open YouTube
+                    </p>
                   </div>
-                  <p>Connecting to YouTube</p>
-                  <p
-                    className="new-tab-link"
-                    onClick={() =>
-                      chrome.tabs.create({ url: "https://youtube.com" })
-                    }
-                  >
-                    Open YouTube
-                  </p>
-                </div>
+                ) : (
+                  <p>Play a video</p>
+                )}
               </div>
             ) : (
               <>
