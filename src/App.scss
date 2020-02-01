@@ -649,6 +649,24 @@ input:checked + .toggleLabel:after {
   margin-bottom: 8px;
 }
 
+.youtube-root-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .logo {
+    margin-bottom: 8px;
+  }
+  .action-link {
+    font-weight: 500;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0.7;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
 // transition group animations //
 
 // fade-up animation //

@@ -44,7 +44,7 @@ class App extends React.Component {
       if (youtubeTabsList.length === 0) {
         this.setState({
           selectVideoMode:
-            tabs.filter(t => YOUTUBE_ROOT_REGEX.test(t.url)).length > 0
+            tabs.find(t => YOUTUBE_ROOT_REGEX.test(t.url)) || false
         })
         return
       }
@@ -292,7 +292,48 @@ class App extends React.Component {
                     </p>
                   </div>
                 ) : (
-                  <p>Play a video</p>
+                  <div className="youtube-root-container">
+                    <div className="logo">
+                      <span className="logo-container">
+                        <svg
+                          width="45"
+                          height="44"
+                          viewBox="0 0 45 44"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M15.3098 24.2437C15.3098 24.0082 15.2369 23.7783 15.1012 23.5858L0.726918 3.19763C0.501966 2.87856 0 3.03772 0 3.42812V41.7134C0 43.4096 1.78381 44.5138 3.302 43.7574L15.0882 37.8852C15.224 37.8175 15.3098 37.6788 15.3098 37.5271V24.2437ZM20.2305 34.6769C20.2305 34.974 20.5429 35.1674 20.8088 35.0349L43.4545 23.7521C45.1388 22.9129 45.1422 20.511 43.4603 19.667L27.9562 11.8876C27.7701 11.7942 27.5434 11.8593 27.4351 12.0373L20.3968 23.6083C20.288 23.7871 20.2305 23.9924 20.2305 24.2017V34.6769ZM23.29 9.80623C23.3486 9.70257 23.3221 9.56237 23.2157 9.50896L5.70174 0.721051C5.32912 0.53408 4.95477 0.970569 5.19635 1.31035L16.9082 17.7832C17.3926 18.4645 18.4208 18.4114 18.8325 17.6839L23.29 9.80623Z"
+                            fill="url(#paint0_linear)"
+                          />
+                          <defs>
+                            <linearGradient
+                              id="paint0_linear"
+                              x1="-4.1546"
+                              y1="-2.57405"
+                              x2="45.0825"
+                              y2="38.0576"
+                              gradientUnits="userSpaceOnUse"
+                            >
+                              <stop stop-color="#EF4056" />
+                              <stop offset="1" stop-color="#F80302" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </span>
+                      <p>Remote</p>
+                    </div>
+                    <p
+                      className="action-link"
+                      onClick={() =>
+                        chrome.tabs.update(selectVideoMode.id, { active: true })
+                      }
+                    >
+                      Play a video on YouTube
+                    </p>
+                  </div>
                 )}
               </div>
             ) : (
